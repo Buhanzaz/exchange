@@ -3,9 +3,7 @@ package com.exchange.rate;
 import com.exchange.rate.exception.ProviderNotFoundException;
 import com.exchange.rate.spi.ExchangeRateProvider;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 
@@ -28,11 +26,8 @@ public class ExchangeRate {
 
     public static ExchangeRateProvider provider(String providerName) {
         ServiceLoader<ExchangeRateProvider> loader = ServiceLoader.load(ExchangeRateProvider.class);
-        Iterator<ExchangeRateProvider> iterator = loader.iterator();
 
-        while (iterator.hasNext()) {
-            ExchangeRateProvider provider = iterator.next();
-
+        for (ExchangeRateProvider provider : loader) {
             if (providerName.equals(provider.getClass().getName())) {
                 return provider;
             }
@@ -40,4 +35,4 @@ public class ExchangeRate {
 
         throw new ProviderNotFoundException("Exchange rate provider %s not found".formatted(providerName));
     }
- }
+}
